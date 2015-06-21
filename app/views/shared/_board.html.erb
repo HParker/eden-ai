@@ -1,0 +1,13 @@
+<div id="board">
+  <table>
+    <% board.to_array.each do |row| %>
+      <tr>
+        <% row.each do |spot| %>
+          <td>
+            <%= content_tag(:div, "", id: spot['name'], class: spot['direction']) if spot %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+</div>

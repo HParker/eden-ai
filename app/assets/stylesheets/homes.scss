@@ -1,0 +1,54 @@
+// Place all the styles related to the homes controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+body {
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+}
+
+#sprite {
+    height: 50px;
+    width: 50px;
+}
+
+#agent.south {
+    @include triangle(50px 50px, green, down);
+}
+
+#agent.north {
+    @include triangle(50px 50px, green, up);
+}
+
+#agent.west {
+    @include triangle(50px 50px, green, left);
+}
+
+#agent.east {
+    @include triangle(50px 50px, green, right);
+}
+
+#cheese {
+    @include triangle(50px 50px, gold, up);
+}
+
+#board table {
+    width: 0;
+}
+
+#board td {
+    border: 1px solid black;
+    height: 50px;
+    width: 50px;
+    padding: 0;
+}
+
+.direction-south {
+    -webkit-transform: rotate(180deg);
+}
+.direction-east {
+    -webkit-transform: rotate(90deg);
+}
+.direction-west {
+    -webkit-transform: rotate(-90deg);
+}
