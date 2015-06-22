@@ -4,7 +4,7 @@
       <tr>
         <% row.each do |spot| %>
           <td>
-            <%= content_tag(:div, "", id: spot['name'], class: spot['direction']) if spot %>
+            <%= content_tag(:div, "", id: spot.first['name'], class: spot.first['direction']) if spot.first %>
           </td>
         <% end %>
       </tr>

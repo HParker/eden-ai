@@ -18,7 +18,7 @@ RSpec.describe Room, type: :model do
     before { create(:map) }
 
     it 'returns the currrent board state' do
-      expected_board = Array.new(6) { Array.new(6) { {} }}
+      expected_board = Array.new(6) { Array.new(6) { [] }}
       expect(Room.new(id: 1, map_id: 1, redis: MockRedis.new).current_board.board).to eq(expected_board)
     end
   end

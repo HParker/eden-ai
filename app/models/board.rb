@@ -1,7 +1,7 @@
 require 'json'
 
 class Board
-  attr_reader :board
+  attr_accessor :board
 
   def initialize(map: nil, board: nil)
     raise "must supply map or board: #{map}, #{board}" if !(map || board)
@@ -28,11 +28,11 @@ class Board
   end
 
   def boardify(map)
-    board = Array.new(map.height) { Array.new(map.width) { {} } }
+    board = Array.new(map.height) { Array.new(map.width) { [] } }
     map.entity_locations.each do |entity_location|
       y, x = entity_location.location_y, entity_location.location_x
       entity = entity_location.entity
-      board[y][x] = { 'name'      => entity.name,
+      board[y][x] << { 'name'      => entity.name,
                       'sprite'    => entity.sprite,
                       'char'      => entity.char,
                       'sprite'    => entity.sprite,
@@ -49,7 +49,11 @@ class Board
   end
 
   def asciify(entity)
-    entity['char'] || ' '
+    if entity.first
+      entity.first['char']
+    else
+      ' '
+    end
   end
 
   def boarder
