@@ -1,7 +1,7 @@
 PATH
-  remote: lib/gems/sock-drawer
+  remote: /Users/adam/code/eden/sock-drawer
   specs:
-    sock-drawer (0.0.1)
+    sock-drawer (0.0.2)
       em-hiredis
       em-websocket
       eventmachine

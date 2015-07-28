@@ -1,4 +1,16 @@
 <h1>Eden</h1>
-<%= render partial: "shared/board", locals: {board: @room.current_board} %>
+<div class="board-container"
+  <%= render partial: "shared/board", locals: { board: @room.current_board } %>
+</div>
 
 <%= @room.current_board.inspect %>
+
+<%= javascript_tag do %>
+ var roomId = "<%= @room.id %>";
+ var websocket = new WebSocket("ws://" + location.hostname + ":8081/" + roomId);
+
+ websocket.onmessage = function (event) {
+   $('.board-container').load(roomId + "/rooms/reload_board");
+   console.log(event.data);
+ }
+<% end %>

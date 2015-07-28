@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   root 'homes#index'
   resources :rooms do
+    get 'rooms/reload_board'
     get 'agents/senses'
     get 'agents/board'
     get 'agents/action'

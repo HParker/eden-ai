@@ -30,4 +30,45 @@ RSpec.describe Board, type: :model do
       expect(board.to_ascii).to eq(expected_board)
     end
   end
+
+  context '#move_agent' do
+    let(:simple_map) { create(:simple_map) }
+    let(:simple_board) { Board.new(map: simple_map) }
+
+    it 'can move the agent forward' do
+      expected_before = "# # # # # # # #\n" +
+                       "#             #\n" +
+                       "#     c       #\n" +
+                       "#             #\n" +
+                       "#             #\n" +
+                       "#     a       #\n" +
+                       "#             #\n" +
+                        "# # # # # # # #\n"
+
+      expected_after = "# # # # # # # #\n" +
+                       "#             #\n" +
+                       "#     c       #\n" +
+                       "#             #\n" +
+                       "#             #\n" +
+                       "#             #\n" +
+                       "#     a       #\n" +
+                       "# # # # # # # #\n"
+
+      expect(simple_board.to_ascii).to eq(expected_before)
+      simple_board.move_agent(:forward)
+      expect(simple_board.to_ascii).to eq(expected_after)
+    end
+  end
+
+  describe '#entities' do
+    let(:simple_board) { create(:simple_map).to_board }
+    it 'returns each entities and the x, y, z' do
+      simple_board # must call for the entities to exist
+      expected_entities = [
+        [{'direction'=>"north", 'name'=>"cheese", 'char'=>"c"}, 1, 2, 0],
+        [{'direction'=>"south", 'name'=>"agent", 'char'=>"a"}, 4, 2, 0]
+      ]
+      expect(simple_board.entities).to eq(expected_entities)
+    end
+  end
 end
