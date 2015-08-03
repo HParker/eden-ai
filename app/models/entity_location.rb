@@ -7,6 +7,10 @@ class EntityLocation < ActiveRecord::Base
   belongs_to :map
 
   def cache
-    {'direction' => direction, 'name' => entity.name, 'char' => entity.char }
+    { 'id' => id,
+      'direction' => direction,
+      'name' => entity.name,
+      'char' => entity.char
+    }
   end
 end

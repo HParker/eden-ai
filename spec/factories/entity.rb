@@ -9,6 +9,7 @@ FactoryGirl.define do
     factory :stone, class: Entity do
       name 'stone'
       sprite 'stone.png'
+      collision true
       char '#'
     end
 

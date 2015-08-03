@@ -62,13 +62,22 @@ RSpec.describe Board, type: :model do
 
   describe '#entities' do
     let(:simple_board) { create(:simple_map).to_board }
+
     it 'returns each entities and the x, y, z' do
       simple_board # must call for the entities to exist
       expected_entities = [
-        [{'direction'=>"north", 'name'=>"cheese", 'char'=>"c"}, 1, 2, 0],
-        [{'direction'=>"south", 'name'=>"agent", 'char'=>"a"}, 4, 2, 0]
+        [{'id' => 1, 'direction'=>"north", 'name'=>"cheese", 'char'=>"c"}, 1, 2, 0],
+        [{'id' => 2, 'direction'=>"south", 'name'=>"agent", 'char'=>"a"}, 4, 2, 0]
       ]
       expect(simple_board.entities).to eq(expected_entities)
+    end
+  end
+
+  describe '#deep_copy' do
+    let(:simple_board) { create(:simple_map).to_board }
+
+    it 'returns a deep copy version of the board' do
+      expect(simple_board.deep_copy).to_not equal(simple_board.board)
     end
   end
 end

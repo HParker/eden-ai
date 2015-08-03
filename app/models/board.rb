@@ -4,6 +4,8 @@ require 'json'
 # but not persistance. Persistance is managed in rooms.
 class Board
   attr_accessor :board # TODO: hide my privates
+  # TODO: board needs a board wrapper
+  # TODO: board needs a reasonable dup for transformer.
 
   def initialize(map: nil, board: nil)
     fail "must supply map or board: #{map}, #{board}" unless map || board
@@ -19,7 +21,7 @@ class Board
   end
 
   def to_ascii
-    [boarder, rows, boarder].join("\n") + "\n"
+    [boarder, rows.join("\n"), boarder].join("\n") + "\n"
   end
 
   def move_agent(direction)
@@ -39,6 +41,11 @@ class Board
     entities
   end
 
+  def deep_copy
+    Marshal.load(Marshal.dump(@board))
+  end
+
+
   private
 
   def from_json(board_json)
@@ -56,9 +63,9 @@ class Board
   end
 
   def rows
-    @board.map { |row|
-      "# " + row.map { |entity| asciify(entity) }.join(' ') + " #"
-    }.join("\n")
+    @board.map do |row|
+      '# ' + row.map { |entity| asciify(entity) }.join(' ') + ' #'
+    end
   end
 
   def asciify(entity)

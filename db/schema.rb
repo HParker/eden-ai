@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 20150517223120) do
   create_table "entities", force: :cascade do |t|
     t.string   "name"
     t.string   "sprite"
+    t.boolean  "collision"
     t.string   "char"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

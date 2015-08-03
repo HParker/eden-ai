@@ -1,6 +1,8 @@
 require 'securerandom'
 require 'redis'
 
+# Room is a particular instance of a board to be solved.
+#
 class Room
   EXPIRATION = 72_000
 

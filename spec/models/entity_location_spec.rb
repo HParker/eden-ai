@@ -11,9 +11,10 @@ RSpec.describe EntityLocation, type: :model do
     let(:entity_location) { create(:stone_location) }
     it 'dumpes a cached copy of the entity and entity location' do
       expected_cache = {
-        'char' => '#',
+        'id'        => 1,
+        'char'      => '#',
         'direction' => 'south',
-        'name' => 'stone'
+        'name'      => 'stone'
       }
       expect(entity_location.cache).to eq(expected_cache)
     end

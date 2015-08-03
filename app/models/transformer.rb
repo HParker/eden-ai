@@ -1,41 +1,46 @@
+# Transformer is responsible for taking a board
+# and returning a transformed version of it.
 class Transformer
   ALLOWED_DIRECTIONS = %i(forward left right)
-  BLANK_SPOT = []
 
   def initialize(board)
-    @board = board
+    @board_object = board
+    @board = board.deep_copy
   end
 
   def move(entity_name, direction)
-    fail "unknown direction" unless direction.in?(ALLOWED_DIRECTIONS)
+    fail 'unknown direction' unless direction.in?(ALLOWED_DIRECTIONS)
     dir, y, x, _z = find(entity_name)
     send(direction, dir, y, x)
-    @board.board
+    @board
   end
+
+  private
 
   def forward(direction, y, x)
     after_y, after_x = move_to(direction, y, x)
-    if forward_valid?(after_y, after_x)
-      swap(y, x, after_y, after_x)
-    end
+    swap(y, x, after_y, after_x) if forward_valid?(after_y, after_x)
   end
 
   def left(direction, y, x)
-    new_heading = (EntityLocation.directions[direction] - 1) % EntityLocation.directions.size
+    new_heading = change_heading(direction, 1)
     new_direction = EntityLocation.directions.key(new_heading)
     set_direction(new_direction, y, x)
   end
 
   def right(direction, y, x)
-    new_heading = (EntityLocation.directions[direction] + 1) % EntityLocation.directions.size
+    new_heading = change_heading(direction, 1)
     new_direction = EntityLocation.directions.key(new_heading)
     set_direction(new_direction, y, x)
   end
 
-  private
+  def change_heading(direction, increment)
+    (EntityLocation.directions[direction] + increment) %
+      EntityLocation.directions.size
+  end
 
   def set_direction(new_direction, y, x)
-    @board.board[y][x].last['direction'] = new_direction
+    @board[y][x].last['direction'] = new_direction
   end
 
   def forward_valid?(y, x)
@@ -43,11 +48,13 @@ class Transformer
   end
 
   def in_bounds?(y, x)
-    @board.board.size > y && @board.board.first.size > x
+    @board.size > y && @board.first.size > x
   end
 
   def collision?(y, x)
-    false
+    @board[y][x].map { |effective_square|
+      effective_square ? Entity.find(effective_square['id']).collision : false
+    }.select { |s| s == true }.size > 0
   end
 
   def move_to(direction, before_y, before_x)
@@ -64,14 +71,14 @@ class Transformer
   end
 
   def find(entity_name)
-    @board.entities.each do |spot, y, x, z|
+    @board_object.entities.each do |spot, y, x, z|
       return [spot['direction'], y, x, z] if spot['name'] == entity_name
     end
-    fail "entity not found"
+    fail 'entity not found'
   end
 
   # for now we only swap the last element at a location z == (x,y).max
   def swap(before_y, before_x, after_y, after_x)
-    @board.board[after_y][after_x] << @board.board[before_y][before_x].pop
+    @board[after_y][after_x] << @board[before_y][before_x].pop
   end
 end
